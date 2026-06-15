@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BRCI Mobile — Click to Pay · v2 · Business — TOP CONSULT SRL</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Inter', sans-serif;
+  background: #EDF1F7;
+  padding: 48px 24px 64px;
+  color: #0D1B2A;
+  min-width: max-content;
+}
+
+/* ── Page header ── */
+.page-header { text-align: center; margin-bottom: 28px; }
+.page-header h1 { font-size: 13px; font-weight: 700; color: #1A56A0; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 4px; }
+.page-header p  { font-size: 11.5px; color: #7A95B0; }
+
+/* ── Compliance strip ── */
+
+/* ── Flow layout ── */
+.flow { display: flex; flex-wrap: nowrap; align-items: flex-start; justify-content: center; gap: 0; margin: 0 auto; }
+.screen-col { display: flex; flex-direction: column; align-items: center; gap: 12px; flex-shrink: 0; }
+.screen-label {
+  font-size: 9px; font-weight: 700; color: #7A95B0;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  text-align: center; height: 28px;
+  display: flex; align-items: center; justify-content: center;
+}
+.arrow-col { display: flex; flex-direction: column; align-items: center; padding-top: calc(28px + 118px); }
+
+/* ── Phone shell ── */
+.phone {
+  width: 212px;
+  height: 446px;
+  flex-shrink: 0;
+  border-radius: 30px;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  box-shadow:
+    0 1px 2px rgba(0,0,0,0.06),
+    0 4px 12px rgba(0,0,0,0.08),
+    0 16px 32px rgba(0,0,0,0.10),
+    0 0 0 1px rgba(0,0,0,0.07);
+}
+
+/* ── Status bar ── */
+.status-bar { display: flex; justify-content: space-between; align-items: center; padding: 9px 14px 4px; flex-shrink: 0; }
+.st-time    { font-size: 11px; font-weight: 700; }
+.st-icons   { display: flex; gap: 4px; align-items: center; }
+
+/* ── Top bar ── */
+.topbar { display: flex; align-items: center; gap: 7px; padding: 3px 14px 9px; flex-shrink: 0; }
+.topbar-back  { font-size: 18px; line-height: 1; }
+.topbar-title { font-size: 12.5px; font-weight: 600; }
+
+/* ── Scrollable content ── */
+.phone-content {
+  padding: 10px 12px 11px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+  overflow: hidden;
+}
+
+/* ── Cards ── */
+.p-card {
+  background: #fff;
+  border-radius: 10px;
+  border: 0.5px solid #E2EAF2;
+  padding: 9px 11px;
+  flex-shrink: 0;
+}
+.p-card-inset {
+  background: #F7FAFD;
+  border-radius: 8px;
+  border: 0.5px solid #E2EAF2;
+  padding: 8px 10px;
+  flex-shrink: 0;
+}
+.p-label { font-size: 9px; font-weight: 700; color: #8FA8BE; text-transform: uppercase; letter-spacing: 0.09em; margin-bottom: 5px; flex-shrink: 0; }
+
+/* ── Row ── */
+.row { display: flex; justify-content: space-between; align-items: center; }
+
+/* ── Toggle ── */
+.toggle { width: 30px; height: 17px; border-radius: 9px; position: relative; flex-shrink: 0; }
+.toggle::after { content: ''; position: absolute; top: 2.5px; width: 12px; height: 12px; background: #fff; border-radius: 50%; box-shadow: 0 1px 2px rgba(0,0,0,0.2); }
+.toggle.on  { background: #1A56A0; }
+.toggle.on::after  { right: 2.5px; }
+.toggle.off { background: #C8D5E2; }
+.toggle.off::after { left: 2.5px; }
+
+/* ── Buttons ── */
+.btn-primary {
+  background: #1A56A0; color: #fff; border-radius: 9px;
+  padding: 8px 0; text-align: center; font-size: 11.5px; font-weight: 600;
+  display: block; flex-shrink: 0; letter-spacing: 0.01em;
+}
+.btn-ghost {
+  background: transparent; color: #1A56A0;
+  border: 1px solid #C4D8EF; border-radius: 9px;
+  padding: 7px 0; text-align: center; font-size: 10.5px; font-weight: 500;
+  display: block; flex-shrink: 0;
+}
+.btn-danger {
+  background: transparent; color: #C0392B;
+  border: 1px solid #E8C0BB; border-radius: 9px;
+  padding: 8px 0; text-align: center; font-size: 10.5px; font-weight: 500;
+  display: block; flex-shrink: 0;
+}
+
+/* ── Divider ── */
+.divider { border: none; border-top: 0.5px solid #EBF0F7; margin: 2px 0; flex-shrink: 0; }
+
+/* ── Step elements ── */
+.step-circle {
+  width: 22px; height: 22px; border-radius: 50%;
+  background: #EBF2FB; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 10px; font-weight: 700; color: #1A56A0;
+}
+.step-row  { display: flex; gap: 9px; align-items: flex-start; }
+.step-text { font-size: 9.5px; color: #4A6278; line-height: 1.45; flex: 1; }
+
+/* ── Benefit cards (Screen 3) ── */
+.benefit-card {
+  background: #fff;
+  border-radius: 10px;
+  border: 0.5px solid #E2EAF2;
+  padding: 8px 11px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+}
+.benefit-icon {
+  width: 26px; height: 26px; border-radius: 7px;
+  background: #EBF2FB;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+.benefit-body { flex: 1; min-width: 0; }
+.benefit-title { font-size: 10px; font-weight: 700; color: #0D2545; margin-bottom: 2px; }
+.benefit-desc  { font-size: 9px; color: #5A7A90; line-height: 1.4; }
+
+/* ── Card art ── */
+.card-art {
+  border-radius: 9px;
+  overflow: hidden;
+  flex-shrink: 0;
+  display: block;
+  width: 100%;
+  aspect-ratio: 85.6 / 54;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.06);
+}
+.card-art svg { width: 100%; height: 100%; display: block; }
+.card-art-wrap { position: relative; flex-shrink: 0; }
+.card-num-overlay {
+  position: absolute;
+  bottom: 22%; left: 5%;
+  color: rgba(255,255,255,0.93);
+  font-size: 9.5px; font-weight: 600; letter-spacing: 1.6px;
+  font-family: 'Courier New', monospace;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.45);
+  pointer-events: none;
+}
+
+/* ── Card thumbnails ── */
+.card-thumb {
+  width: 40px; height: 25px;
+  border-radius: 4px;
+  overflow: hidden;
+  flex-shrink: 0;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.12);
+}
+.card-thumb svg { width: 100%; height: 100%; display: block; }
+.card-thumb-inactive {
+  width: 40px; height: 25px; border-radius: 4px;
+  background: #E8EEF5; flex-shrink: 0;
+  border: 0.5px solid #D4DCE8;
+}
+
+/* ── Card text ── */
+.card-name    { font-size: 10px; font-weight: 600; color: #1A1A2E; }
+.card-num-lbl { font-size: 9px; color: #8FA8BE; margin-top: 1px; }
+.card-benefit { font-size: 8.5px; color: #4A6278; font-style: italic; line-height: 1.35; margin-top: 2px; }
+
+/* ── C2P section ── */
+.c2p-hdr   { display: flex; align-items: center; gap: 7px; margin-bottom: 6px; }
+.c2p-title { font-size: 11.5px; font-weight: 700; color: #0D2545; }
+.c2p-badge {
+  display: inline-flex; align-items: center; gap: 4px;
+  background: #EBF2FB; border-radius: 5px; padding: 3px 8px 3px 6px;
+  font-size: 9px; font-weight: 700; color: #1A56A0;
+}
+.c2p-note { font-size: 8.5px; color: #7A95B0; line-height: 1.45; margin-top: 5px; }
+
+/* ── Enrolled badge ── */
+.enrolled-pill {
+  display: inline-flex; align-items: center; gap: 3px;
+  background: #E6F4EE; border-radius: 4px; padding: 1px 6px;
+  font-size: 8px; font-weight: 600; color: #1A7A4A;
+  margin-top: 2px;
+}
+
+/* ── Screen 1: Lock screen ── */
+.s1 { background: #1C1008; }
+.s1-bg {
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse at 30% 22%, rgba(90,45,10,0.55) 0%, transparent 55%),
+    radial-gradient(ellipse at 72% 65%, rgba(40,18,4,0.5) 0%, transparent 50%),
+    #1c1008;
+}
+.s1 > * { position: relative; z-index: 1; }
+.s1-lock { text-align: center; padding: 10px 0 11px; }
+.s1-lock-icon { font-size: 22px; }
+.s1-lock-date { color: rgba(255,255,255,0.5); font-size: 10px; margin-top: 3px; letter-spacing: 0.02em; }
+.s1-notif-header { display: flex; justify-content: space-between; align-items: center; padding: 2px 12px 7px; }
+.s1-app-name { color: #fff; font-size: 13.5px; font-weight: 800; letter-spacing: -0.02em; }
+.s1-controls { display: flex; gap: 5px; }
+.s1-ctrl { background: rgba(255,255,255,0.16); border-radius: 100px; padding: 3px 9px; display: flex; align-items: center; gap: 4px; color: #fff; font-size: 9.5px; font-weight: 500; }
+.s1-x    { background: rgba(255,255,255,0.16); border-radius: 50%; width: 21px; height: 21px; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 10px; font-weight: 600; }
+.notif-card { background: rgba(30,28,28,0.88); backdrop-filter: blur(8px); border: 0.5px solid rgba(255,255,255,0.08); border-radius: 14px; margin: 0 10px 8px; padding: 10px 12px; display: flex; gap: 10px; align-items: flex-start; }
+.notif-card.dim { opacity: 0.38; }
+.brci-icon { width: 36px; height: 36px; border-radius: 9px; background: linear-gradient(135deg, #1e3a8a, #1A56A0); flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+.notif-body { flex: 1; min-width: 0; }
+.notif-top  { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 3px; }
+.notif-title { color: #fff; font-size: 11px; font-weight: 700; }
+.notif-time  { color: rgba(255,255,255,0.38); font-size: 9px; flex-shrink: 0; margin-left: 6px; }
+.notif-text  { color: rgba(255,255,255,0.72); font-size: 9.5px; line-height: 1.45; }
+.c2p-inline  { display: inline-flex; align-items: center; gap: 3px; background: rgba(255,255,255,0.12); border-radius: 4px; padding: 1px 5px; vertical-align: middle; }
+.s1-swipe { text-align: center; color: rgba(255,255,255,0.18); font-size: 9px; padding: 6px 0 9px; margin-top: auto; letter-spacing: 0.04em; }
+
+/* ── C2P enablement banner ── */
+.enablement-banner {
+  background: linear-gradient(135deg, #0D2545 0%, #1A3A70 100%);
+  border-radius: 12px;
+  padding: 11px 12px;
+  flex-shrink: 0;
+  position: relative;
+  overflow: hidden;
+}
+.enablement-banner::before {
+  content: '';
+  position: absolute;
+  top: -18px; right: -18px;
+  width: 70px; height: 70px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.04);
+}
+.banner-card-preview {
+  position: absolute;
+  right: 11px; top: 50%;
+  transform: translateY(-50%);
+  width: 52px; height: 33px;
+  border-radius: 5px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.35);
+  opacity: 0.92;
+}
+.banner-card-preview svg { width: 100%; height: 100%; display: block; }
+
+/* ── Annotation strip ── */
+
+</style>
+</head>
+<body>
+<svg xmlns="http://www.w3.org/2000/svg" width="0" height="0" style="position:absolute;overflow:hidden">
+<defs>
+  <clipPath id="card-clip"><rect width="342" height="216" rx="14"/></clipPath>
+
+  <linearGradient id="cg-pf" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0%" stop-color="#7ED5F2"/><stop offset="55%" stop-color="#50AEE0"/><stop offset="100%" stop-color="#2B6DC0"/>
+  </linearGradient>
+  <symbol id="brci-card-pf" viewBox="0 0 342 216">
+    <rect width="342" height="216" rx="14" fill="url(#cg-pf)"/>
+    <g clip-path="url(#card-clip)">
+      <path d="M168 0 L264 0 L264 24 L288 24 L288 0 L342 0 L342 72 L318 72 L318 48 L294 48 L294 72 L270 72 L270 96 L318 96 L318 120 L294 120 L294 144 L342 144 L342 216 L246 216 L246 192 L222 192 L222 216 L168 216 L168 168 L192 168 L192 144 L168 144 L168 96 L216 96 L216 72 L168 72 Z" fill="#16357E" opacity="0.82"/>
+      <rect x="240" y="0" width="24" height="24" fill="#2952A8" opacity="0.7"/>
+      <rect x="294" y="48" width="24" height="24" fill="#2952A8" opacity="0.7"/>
+      <rect x="216" y="72" width="54" height="24" fill="#2952A8" opacity="0.7"/>
+      <rect x="294" y="120" width="48" height="24" fill="#2952A8" opacity="0.7"/>
+      <rect x="168" y="144" width="24" height="24" fill="#2952A8" opacity="0.7"/>
+      <rect x="222" y="192" width="24" height="24" fill="#2952A8" opacity="0.7"/>
+      <g fill="#AADFF5" opacity="0.35">
+        <rect x="168" y="0" width="96" height="2"/><rect x="288" y="0" width="54" height="2"/>
+        <rect x="294" y="48" width="24" height="2"/><rect x="270" y="72" width="48" height="2"/>
+        <rect x="294" y="120" width="48" height="2"/><rect x="168" y="144" width="24" height="2"/>
+        <rect x="222" y="192" width="24" height="2"/>
+      </g>
+    </g>
+    <rect x="16" y="14" width="11" height="11" rx="1.5" fill="#CC2229"/>
+    <rect x="29" y="14" width="11" height="11" rx="1.5" fill="#CC2229"/>
+    <rect x="16" y="27" width="11" height="11" rx="1.5" fill="#CC2229"/>
+    <rect x="29" y="27" width="11" height="11" rx="1.5" fill="#1A56A0"/>
+    <rect x="20" y="18" width="4" height="4" rx="0.5" fill="#7ED5F2"/>
+    <rect x="20" y="31" width="4" height="4" rx="0.5" fill="#7ED5F2"/>
+    <text x="46" y="32" font-family="'Arial Black',Arial,sans-serif" font-weight="900" font-size="19" fill="#1A56A0">BRCI</text>
+    <text x="285" y="20" font-family="Arial,sans-serif" font-size="13" fill="#0F2350" font-weight="400" text-anchor="end">debit</text>
+    <rect x="16" y="80" width="38" height="28" rx="4" fill="#D4AA50"/>
+    <rect x="20" y="84" width="30" height="20" rx="2" fill="#B89030"/>
+    <line x1="16" y1="90" x2="54" y2="90" stroke="#D4AA50" stroke-width="1.5"/>
+    <line x1="16" y1="96" x2="54" y2="96" stroke="#D4AA50" stroke-width="1.5"/>
+    <line x1="30" y1="80" x2="30" y2="108" stroke="#D4AA50" stroke-width="1.5"/>
+    <line x1="41" y1="80" x2="41" y2="108" stroke="#D4AA50" stroke-width="1.5"/>
+    <path d="M68 84 Q75 94 68 104" stroke="#0F2350" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <path d="M75 80 Q84 94 75 108" stroke="#0F2350" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <path d="M82 76 Q94 94 82 112" stroke="#0F2350" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <text x="148" y="158" font-family="Arial,sans-serif" font-size="7.5" fill="#0F2350" text-anchor="middle" opacity="0.75" letter-spacing="0.4">VALID</text>
+    <text x="148" y="167" font-family="Arial,sans-serif" font-size="7.5" fill="#0F2350" text-anchor="middle" opacity="0.75" letter-spacing="0.4">THRU</text>
+    <circle cx="288" cy="182" r="20" fill="#EB001B" opacity="0.93"/>
+    <circle cx="310" cy="182" r="20" fill="#F79E1B" opacity="0.93"/>
+    <path d="M299 163 Q307 182 299 201 Q291 182 299 163Z" fill="#FF5F00" opacity="0.95"/>
+  </symbol>
+
+  <linearGradient id="cg-biz" x1="0" y1="1" x2="1" y2="0">
+    <stop offset="0%" stop-color="#AEAEAE"/><stop offset="50%" stop-color="#CCCCCC"/><stop offset="100%" stop-color="#E0E0E0"/>
+  </linearGradient>
+  <linearGradient id="biz-sh" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0%" stop-color="#707070"/><stop offset="100%" stop-color="#505050"/>
+  </linearGradient>
+  <linearGradient id="biz-mid" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0%" stop-color="#A0A0A0"/><stop offset="100%" stop-color="#808080"/>
+  </linearGradient>
+  <linearGradient id="sheen" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.38"/>
+    <stop offset="60%" stop-color="#FFFFFF" stop-opacity="0"/>
+    <stop offset="100%" stop-color="#000000" stop-opacity="0.12"/>
+  </linearGradient>
+  <symbol id="brci-card-biz" viewBox="0 0 342 216">
+    <rect width="342" height="216" rx="14" fill="url(#cg-biz)"/>
+    <rect width="342" height="216" rx="14" fill="url(#sheen)" opacity="0.9"/>
+    <g clip-path="url(#card-clip)">
+      <path d="M168 0 L264 0 L264 24 L288 24 L288 0 L342 0 L342 72 L318 72 L318 48 L294 48 L294 72 L270 72 L270 96 L318 96 L318 120 L294 120 L294 144 L342 144 L342 216 L246 216 L246 192 L222 192 L222 216 L168 216 L168 168 L192 168 L192 144 L168 144 L168 96 L216 96 L216 72 L168 72 Z" fill="url(#biz-sh)"/>
+      <rect x="240" y="0" width="24" height="24" fill="url(#biz-mid)"/>
+      <rect x="294" y="48" width="24" height="24" fill="url(#biz-mid)"/>
+      <rect x="216" y="72" width="54" height="24" fill="url(#biz-mid)"/>
+      <rect x="294" y="120" width="48" height="24" fill="url(#biz-mid)"/>
+      <rect x="168" y="144" width="24" height="24" fill="url(#biz-mid)"/>
+      <rect x="222" y="192" width="24" height="24" fill="url(#biz-mid)"/>
+      <g fill="#E8E8E8" opacity="0.7">
+        <rect x="168" y="0" width="96" height="2"/><rect x="288" y="0" width="54" height="2"/>
+        <rect x="294" y="48" width="24" height="2"/><rect x="216" y="72" width="54" height="2"/>
+        <rect x="294" y="120" width="48" height="2"/><rect x="168" y="144" width="24" height="2"/>
+        <rect x="222" y="192" width="24" height="2"/>
+      </g>
+      <g fill="#1A1A1A" opacity="0.22">
+        <rect x="168" y="70" width="96" height="2"/><rect x="264" y="22" width="24" height="2"/>
+        <rect x="318" y="70" width="24" height="2"/><rect x="270" y="94" width="48" height="2"/>
+        <rect x="318" y="118" width="24" height="2"/><rect x="192" y="166" width="24" height="2"/>
+        <rect x="246" y="214" width="24" height="2"/>
+      </g>
+    </g>
+    <rect x="16" y="14" width="11" height="11" rx="1.5" fill="#CC2229"/>
+    <rect x="29" y="14" width="11" height="11" rx="1.5" fill="#CC2229"/>
+    <rect x="16" y="27" width="11" height="11" rx="1.5" fill="#CC2229"/>
+    <rect x="29" y="27" width="11" height="11" rx="1.5" fill="#1A56A0"/>
+    <rect x="20" y="18" width="4" height="4" rx="0.5" fill="#D0D0D0"/>
+    <rect x="20" y="31" width="4" height="4" rx="0.5" fill="#D0D0D0"/>
+    <text x="46" y="32" font-family="'Arial Black',Arial,sans-serif" font-weight="900" font-size="19" fill="#1A56A0">BRCI</text>
+    <text x="285" y="20" font-family="Arial,sans-serif" font-size="13" fill="#2C2C2C" font-weight="400" text-anchor="end">business</text>
+    <rect x="16" y="80" width="38" height="28" rx="4" fill="#C2C2C2"/>
+    <rect x="20" y="84" width="30" height="20" rx="2" fill="#A6A6A6"/>
+    <line x1="16" y1="90" x2="54" y2="90" stroke="#C2C2C2" stroke-width="1.5"/>
+    <line x1="16" y1="96" x2="54" y2="96" stroke="#C2C2C2" stroke-width="1.5"/>
+    <line x1="30" y1="80" x2="30" y2="108" stroke="#C2C2C2" stroke-width="1.5"/>
+    <line x1="41" y1="80" x2="41" y2="108" stroke="#C2C2C2" stroke-width="1.5"/>
+    <path d="M68 84 Q75 94 68 104" stroke="#2C2C2C" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <path d="M75 80 Q84 94 75 108" stroke="#2C2C2C" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <path d="M82 76 Q94 94 82 112" stroke="#2C2C2C" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <text x="148" y="158" font-family="Arial,sans-serif" font-size="7.5" fill="#3A3A3A" text-anchor="middle" opacity="0.8" letter-spacing="0.4">VALID</text>
+    <text x="148" y="167" font-family="Arial,sans-serif" font-size="7.5" fill="#3A3A3A" text-anchor="middle" opacity="0.8" letter-spacing="0.4">THRU</text>
+    <circle cx="288" cy="182" r="20" fill="#EB001B" opacity="0.93"/>
+    <circle cx="310" cy="182" r="20" fill="#F79E1B" opacity="0.93"/>
+    <path d="M299 163 Q307 182 299 201 Q291 182 299 163Z" fill="#FF5F00" opacity="0.95"/>
+  </symbol>
+</defs>
+</svg>
+<svg style="display:none">
+  <symbol id="c2p-w" viewBox="0 0 26 16"><path fill-rule="evenodd" clip-rule="evenodd" d="M18.7674 0.25C19.0892 -0.0599736 19.5996 -0.0576986 19.9187 0.255132L25.7008 7.27744C26.1041 7.67282 26.1001 8.32304 25.6919 8.71342L20.0199 15.7917C19.8802 15.9254 19.6942 16 19.5007 16L14.7382 16C14.067 16 13.733 15.1873 14.2108 14.7162L20.0226 8L14.7382 1.5H12.6184L17.6723 7.27775C18.0847 7.67133 18.085 8.32904 17.6731 8.72307L11.0327 15.7917C10.8929 15.9254 10.7069 16 10.5134 16H2.99992C1.34348 16 0.000490164 14.6575 0.000235639 13.0011C-0.000276616 9.66733 0.000159259 6.3336 0.000478815 2.99986C0.000637627 1.34306 1.34377 0 3.00057 0H5.98488C6.39954 0 6.7357 0.335787 6.7357 0.75C6.7357 1.16421 6.39954 1.5 5.98488 1.5H3.50231C2.39774 1.5 1.50231 2.39543 1.50231 3.5C1.50231 6.5 1.50231 9.5 1.50231 12.5C1.50231 13.6046 2.39774 14.5 3.50231 14.5H9.95778L16.0182 8L10.2064 1.28378C9.72866 0.812734 10.0626 0 10.7338 0H15.3757C15.5692 0 15.7552 0.0746159 15.8949 0.208287L21.6774 7.27693C22.0894 7.67096 22.089 8.32867 21.6767 8.72225L16.6227 14.5H18.8757L24.027 8L18.7674 1.5C18.4378 1.17429 18.4336 0.571441 18.7674 0.25Z" fill="white"/></symbol>
+  <symbol id="c2p-b" viewBox="0 0 26 16"><path fill-rule="evenodd" clip-rule="evenodd" d="M18.7674 0.25C19.0892 -0.0599736 19.5996 -0.0576986 19.9187 0.255132L25.7008 7.27744C26.1041 7.67282 26.1001 8.32304 25.6919 8.71342L20.0199 15.7917C19.8802 15.9254 19.6942 16 19.5007 16L14.7382 16C14.067 16 13.733 15.1873 14.2108 14.7162L20.0226 8L14.7382 1.5H12.6184L17.6723 7.27775C18.0847 7.67133 18.085 8.32904 17.6731 8.72307L11.0327 15.7917C10.8929 15.9254 10.7069 16 10.5134 16H2.99992C1.34348 16 0.000490164 14.6575 0.000235639 13.0011C-0.000276616 9.66733 0.000159259 6.3336 0.000478815 2.99986C0.000637627 1.34306 1.34377 0 3.00057 0H5.98488C6.39954 0 6.7357 0.335787 6.7357 0.75C6.7357 1.16421 6.39954 1.5 5.98488 1.5H3.50231C2.39774 1.5 1.50231 2.39543 1.50231 3.5C1.50231 6.5 1.50231 9.5 1.50231 12.5C1.50231 13.6046 2.39774 14.5 3.50231 14.5H9.95778L16.0182 8L10.2064 1.28378C9.72866 0.812734 10.0626 0 10.7338 0H15.3757C15.5692 0 15.7552 0.0746159 15.8949 0.208287L21.6774 7.27693C22.0894 7.67096 22.089 8.32867 21.6767 8.72225L16.6227 14.5H18.8757L24.027 8L18.7674 1.5C18.4378 1.17429 18.4336 0.571441 18.7674 0.25Z" fill="#1A56A0"/></symbol>
+  <symbol id="brci-icon" viewBox="0 0 28 28">
+    <rect x="3" y="3" width="9" height="9" rx="1.5" fill="#E8321A"/><rect x="4.5" y="4.5" width="6" height="6" rx="0.8" fill="#1a3080"/>
+    <rect x="16" y="3" width="9" height="9" rx="1.5" fill="#E8321A"/><rect x="17.5" y="4.5" width="6" height="6" rx="0.8" fill="#1a3080"/>
+    <rect x="3" y="16" width="9" height="9" rx="1.5" fill="#E8321A"/><rect x="4.5" y="17.5" width="6" height="6" rx="0.8" fill="#1a3080"/>
+    <rect x="16" y="16" width="4" height="4" rx="0.8" fill="#E8321A"/><rect x="21" y="16" width="4" height="4" rx="0.8" fill="#E8321A"/>
+    <rect x="16" y="21" width="4" height="4" rx="0.8" fill="#E8321A"/><rect x="21" y="21" width="4" height="4" rx="0.8" fill="#E8321A"/>
+  </symbol>
+  <symbol id="ico-wifi" viewBox="0 0 16 12"><path d="M8 9.5a1.5 1.5 0 100 3 1.5 1.5 0 000-3zM1 3.5S4 0 8 0s7 3.5 7 3.5L13.5 5S11 2 8 2 2.5 5 2.5 5L1 3.5zM3.5 6S5.5 4 8 4s4.5 2 4.5 2L11 7.5S9.8 6 8 6 5 7.5 5 7.5L3.5 6z" fill="currentColor"/></symbol>
+  <symbol id="ico-batt" viewBox="0 0 20 10"><rect x="0" y="1" width="17" height="8" rx="2" stroke="currentColor" stroke-width="1" fill="none"/><rect x="1" y="2" width="13" height="6" rx="1" fill="currentColor"/><path d="M18 3.5v3a1.5 1.5 0 000-3z" fill="currentColor" opacity="0.4"/></symbol>
+</svg>
+
+<div class="page-header">
+  <h1>BRCI Mobile — Click to Pay</h1>
+  <p>v2 · Business · Mastercard SRCPR · Auto-Enablement Flow · 5 Screens</p>
+</div>
+
+</div>
+
+<div class="flow">
+  <div class="screen-col">
+    <div class="screen-label">01 · Push Notification</div>
+    <div class="phone s1">
+      <div class="s1-bg"></div>
+      <div class="status-bar" style="background:transparent;">
+        <span class="st-time" style="color:#fff;">9:41</span>
+        <div class="st-icons" style="color:#fff;">
+          <svg width="13" height="10" style="color:#fff;"><use href="#ico-wifi"/></svg>
+          <svg width="18" height="10" style="color:#fff;"><use href="#ico-batt"/></svg>
+        </div>
+      </div>
+      <div class="s1-lock">
+        <div class="s1-lock-icon">🔒</div>
+        <div class="s1-lock-date">Wednesday, 11 June</div>
+      </div>
+      <div class="s1-notif-header">
+        <span class="s1-app-name">BRCI Mobile</span>
+        <div class="s1-controls">
+          <div class="s1-ctrl"><svg width="8" height="6" viewBox="0 0 10 7" fill="none"><path d="M1.5 2L5 5.5L8.5 2" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> Show less</div>
+          <div class="s1-x">✕</div>
+        </div>
+      </div>
+      <div class="notif-card">
+        <div class="brci-icon"><svg width="22" height="22" viewBox="0 0 28 28"><use href="#brci-icon"/></svg></div>
+        <div class="notif-body">
+          <div class="notif-top"><span class="notif-title">Click to Pay BRCI</span><span class="notif-time">now</span></div>
+          <div class="notif-text">Check out faster with <span class="c2p-inline"><svg width="11" height="7" viewBox="0 0 26 16"><use href="#c2p-w"/></svg> Click to Pay</span> — your card is ready.</div>
+        </div>
+      </div>
+      <div class="notif-card dim">
+        <div class="brci-icon"><svg width="22" height="22" viewBox="0 0 28 28"><use href="#brci-icon"/></svg></div>
+        <div class="notif-body">
+          <div class="notif-top"><span class="notif-title">Payment BRCI</span><span class="notif-time">2h ago</span></div>
+          <div class="notif-text">Transaction of 248.50 EUR on 11-06-2026.</div>
+        </div>
+      </div>
+      <div class="s1-swipe">swipe up to unlock</div>
+    </div>
+      <div class="annot-item"><span class="annot-check">✓</span><span><strong>IA.R1</strong> — C2P icon + text inline in notification per brand requirements</span></div>
+    </div>
+  </div>
+  <div class="arrow-col">
+    <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M7 10h7M11 7l3 3-3 3" stroke="#C8D5E2" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </div>
+  <div class="screen-col">
+    <div class="screen-label">02 · C2P Enablement</div>
+    <div class="phone" style="background:#F4F6FB; display:flex; flex-direction:column;">
+      <div class="status-bar" style="background:#1A56A0;">
+        <span class="st-time" style="color:#fff;">9:41</span>
+        <div class="st-icons" style="color:#fff;">
+          <svg width="13" height="10" style="color:#fff;"><use href="#ico-wifi"/></svg>
+          <svg width="18" height="10" style="color:#fff;"><use href="#ico-batt"/></svg>
+        </div>
+      </div>
+      <div style="background:#1A56A0; padding:6px 14px 10px; display:flex; justify-content:space-between; align-items:center; flex-shrink:0;">
+        <div>
+          <div style="color:rgba(255,255,255,0.65); font-size:9px; letter-spacing:0.02em;">Welcome back,</div>
+          <div style="color:#fff; font-size:12.5px; font-weight:700; margin-top:1px;">TOP CONSULT SRL</div>
+        </div>
+        <span style="font-size:16px;">🔔</span>
+      </div>
+      <div class="phone-content">
+        <!-- Enablement banner with card preview -->
+        <div class="enablement-banner">
+          <div class="banner-card-preview"><svg viewBox="0 0 342 216"><use href="#brci-card-biz"/></svg></div>
+          <div style="padding-right:64px;">
+            <div style="display:flex; align-items:center; gap:5px; margin-bottom:5px;">
+              <img src="data:image/png;base64,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" style="height:12px;" alt="Click to Pay">
+              <span style="background:#27AE60; color:#fff; font-size:7.5px; font-weight:700; border-radius:3px; padding:1px 5px; letter-spacing:0.04em;">ACTIVE</span>
+            </div>
+            <div style="color:#fff; font-size:10.5px; font-weight:600; line-height:1.35; margin-bottom:3px;">Check out faster — your card is now active.</div>
+            <div style="color:rgba(255,255,255,0.58); font-size:8.5px; margin-bottom:8px;">No card number needed at checkout.</div>
+            <div style="background:rgba(255,255,255,0.12); border-radius:6px; padding:4px 9px; display:inline-block; border: 0.5px solid rgba(255,255,255,0.2);">
+              <span style="color:#fff; font-size:9px; font-weight:500;">Learn more →</span>
+            </div>
+          </div>
+        </div>
+        <!-- App grid -->
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:7px; flex-shrink:0;">
+          <div class="p-card" style="text-align:center; padding:10px 8px;"><div style="font-size:19px; margin-bottom:3px;">💸</div><div style="font-size:9px; color:#6A88A0; font-weight:500;">Payments</div></div>
+          <div class="p-card" style="text-align:center; padding:10px 8px;"><div style="font-size:19px; margin-bottom:3px;">🔄</div><div style="font-size:9px; color:#6A88A0; font-weight:500;">Transfers</div></div>
+          <div class="p-card" style="text-align:center; padding:10px 8px;"><div style="font-size:19px; margin-bottom:3px;">💳</div><div style="font-size:9px; color:#6A88A0; font-weight:500;">Cards</div></div>
+          <div class="p-card" style="text-align:center; padding:10px 8px;"><div style="font-size:19px; margin-bottom:3px;">🏦</div><div style="font-size:9px; color:#6A88A0; font-weight:500;">Branches</div></div>
+        </div>
+      </div>
+    </div>
+      <div class="annot-item"><span class="annot-check">✓</span><span><strong>CrdArt.R1</strong> — Issuer card visible in banner (increased card prominence)</span></div>
+      <div class="annot-item"><span class="annot-check">✓</span><span><strong>BP2</strong> — "Check out faster — your card is now active." (≤2 lines)</span></div>
+    </div>
+  </div>
+  <div class="arrow-col">
+    <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M7 10h7M11 7l3 3-3 3" stroke="#C8D5E2" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </div>
+  <div class="screen-col">
+    <div class="screen-label">03 · C2P Education</div>
+    <div class="phone" style="background:#F4F6FB; display:flex; flex-direction:column;">
+      <div class="status-bar" style="background:#1A56A0;">
+        <span class="st-time" style="color:#fff;">9:41</span>
+        <div class="st-icons" style="color:#fff;">
+          <svg width="13" height="10" style="color:#fff;"><use href="#ico-wifi"/></svg>
+          <svg width="18" height="10" style="color:#fff;"><use href="#ico-batt"/></svg>
+        </div>
+      </div>
+      <div class="topbar" style="background:#1A56A0;">
+        <span class="topbar-back" style="color:#fff;">‹</span>
+        <span class="topbar-title" style="color:#fff;">Click to Pay</span>
+      </div>
+      <div class="phone-content">
+        <!-- Hero: C2P icon + card -->
+        <div style="text-align:center; padding:2px 0 2px; flex-shrink:0;">
+          <div style="display:flex; align-items:center; justify-content:center; gap:8px; margin-bottom:6px;">
+            <svg width="34" height="22" viewBox="0 0 26 16" style="flex-shrink:0;"><use href="#c2p-b"/></svg>
+            <div style="width:1px; height:20px; background:#D4DCE8;"></div>
+            <div style="width:38px; height:24px; border-radius:4px; overflow:hidden; box-shadow:0 1px 4px rgba(0,0,0,0.15);">
+              <svg viewBox="0 0 342 216" style="width:100%;height:100%;display:block;"><use href="#brci-card-biz"/></svg>
+            </div>
+            <div style="width:1px; height:20px; background:#D4DCE8;"></div>
+            <div style="display:flex;">
+              <div style="width:14px;height:14px;border-radius:50%;background:#EB001B;opacity:0.92;"></div>
+              <div style="width:14px;height:14px;border-radius:50%;background:#F79E1B;opacity:0.92;margin-left:-5px;"></div>
+            </div>
+          </div>
+          <div style="font-size:11px; font-weight:700; color:#0D2545; margin-bottom:2px;">Pay online faster</div>
+          <div style="font-size:9px; color:#7A95B0; line-height:1.4;">No card details required.</div>
+        </div>
+        <!-- Benefit cards -->
+        <div class="benefit-card">
+          <div class="benefit-icon">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M13 10V3L4 14h7v7l9-11h-7z" stroke="#1A56A0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="benefit-body">
+            <div class="benefit-title">Faster Checkout</div>
+            <div class="benefit-desc">No card number to enter during checkout.</div>
+          </div>
+        </div>
+        <div class="benefit-card">
+          <div class="benefit-icon">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke="#1A56A0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="benefit-body">
+            <div class="benefit-title">Enhanced Security</div>
+            <div class="benefit-desc">Protected through Mastercard tokenization.</div>
+          </div>
+        </div>
+        <div class="benefit-card">
+          <div class="benefit-icon">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M20 12V22H4V12M22 7H2v5h20V7zM12 22V7M12 7H7.5a2.5 2.5 0 010-5C11 2 12 7 12 7zM12 7h4.5a2.5 2.5 0 000-5C13 2 12 7 12 7z" stroke="#1A56A0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="benefit-body">
+            <div class="benefit-title">Choose Your Card</div>
+            <div class="benefit-desc">Select your preferred BRCI card and confirm.</div>
+          </div>
+        </div>
+        <div class="btn-primary">Got it</div>
+        <div class="btn-ghost">Manage C2P Settings</div>
+      </div>
+    </div>
+      <div class="annot-item"><span class="annot-check">✓</span><span><strong>BP2</strong> — Value-oriented benefits replace step-by-step instructions</span></div>
+      <div class="annot-item"><span class="annot-check">✓</span><span><strong>CrdArt.R1</strong> — Issuer card visible alongside C2P and Mastercard marks</span></div>
+    </div>
+  </div>
+  <div class="arrow-col">
+    <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M7 10h7M11 7l3 3-3 3" stroke="#C8D5E2" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </div>
+  <div class="screen-col">
+    <div class="screen-label">04 · C2P Settings</div>
+    <div class="phone" style="background:#F4F6FB; display:flex; flex-direction:column;">
+      <div class="status-bar" style="background:#1A56A0;">
+        <span class="st-time" style="color:#fff;">9:41</span>
+        <div class="st-icons" style="color:#fff;">
+          <svg width="13" height="10" style="color:#fff;"><use href="#ico-wifi"/></svg>
+          <svg width="18" height="10" style="color:#fff;"><use href="#ico-batt"/></svg>
+        </div>
+      </div>
+      <div class="topbar" style="background:#1A56A0;">
+        <span class="topbar-back" style="color:#fff;">‹</span>
+        <span class="topbar-title" style="color:#fff;">C2P Settings</span>
+      </div>
+      <div class="phone-content">
+        <div class="p-label">Your C2P Account</div>
+        <div class="p-card">
+          <div class="row" style="margin-bottom:5px;">
+            <span style="font-size:9px; color:#8FA8BE;">Email</span>
+            <span style="font-size:9px; color:#1A56A0; font-weight:600;">o*****e@topconsult.ro</span>
+          </div>
+          <div class="row">
+            <span style="font-size:9px; color:#8FA8BE;">Phone</span>
+            <span style="font-size:9px; color:#1A56A0; font-weight:600;">+40 7** *** 456</span>
+          </div>
+        </div>
+        <div class="p-label">Enrolled Cards</div>
+        <!-- Card 1: enrolled — stronger visual treatment -->
+        <div class="p-card" style="border-color:#C4D8EF; background:#F7FAFD;">
+          <div class="row">
+            <div style="display:flex; align-items:center; gap:9px;">
+              <div class="card-thumb"><svg viewBox="0 0 342 216"><use href="#brci-card-biz"/></svg></div>
+              <div>
+                <div class="card-name">Mastercard Business Debit</div>
+                <div class="card-num-lbl">•••• 4521</div>
+                <div class="enrolled-pill">
+                  <svg width="7" height="7" viewBox="0 0 26 16" style="flex-shrink:0;"><use href="#c2p-b"/></svg>
+                  Enrolled
+                </div>
+              </div>
+            </div>
+            <div class="toggle on"></div>
+          </div>
+          <div style="font-size:8px; color:#4A7A5A; margin-top:5px; line-height:1.35; font-style:italic;">Track expenses with detailed monthly reports.</div>
+        </div>
+        <!-- Card 2: not enrolled -->
+        <div class="p-card">
+          <div class="row">
+            <div style="display:flex; align-items:center; gap:9px;">
+              <div class="card-thumb-inactive"></div>
+              <div>
+                <div class="card-name" style="color:#9AAABB;">Mastercard Business Credit</div>
+                <div class="card-num-lbl">•••• 8834</div>
+                <div style="font-size:8px; color:#B8C8D8; margin-top:2px; font-style:italic;">Higher limits for business spending.</div>
+              </div>
+            </div>
+            <div class="toggle off"></div>
+          </div>
+        </div>
+        <div style="margin-top:auto; padding-top:8px;">
+          <div style="text-align:center; font-size:9px; color:#B0BEC5; cursor:pointer; padding:4px 0; letter-spacing:0.01em;">Delete C2P profile</div>
+        </div>
+      </div>
+    </div>
+      <div class="annot-item"><span class="annot-check">✓</span><span><strong>UI.R7</strong> — Card art, program name, last 4 digits displayed</span></div>
+      <div class="annot-item"><span class="annot-check">✓</span><span><strong>UI.R8</strong> — Benefit text-only, ≤74 chars (45 chars). Strong visual distinction enrolled vs. not enrolled</span></div>
+    </div>
+  </div>
+  <div class="arrow-col">
+    <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M7 10h7M11 7l3 3-3 3" stroke="#C8D5E2" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </div>
+  <div class="screen-col">
+    <div class="screen-label">05 · Card Details</div>
+    <div class="phone" style="background:#F4F6FB; display:flex; flex-direction:column;">
+      <div class="status-bar" style="background:#1A56A0;">
+        <span class="st-time" style="color:#fff;">9:41</span>
+        <div class="st-icons" style="color:#fff;">
+          <svg width="13" height="10" style="color:#fff;"><use href="#ico-wifi"/></svg>
+          <svg width="18" height="10" style="color:#fff;"><use href="#ico-batt"/></svg>
+        </div>
+      </div>
+      <div class="topbar" style="background:#1A56A0;">
+        <span class="topbar-back" style="color:#fff;">‹</span>
+        <span class="topbar-title" style="color:#fff;">Card Details</span>
+      </div>
+      <div class="phone-content">
+        <!-- Larger card art -->
+        <div class="card-art-wrap">
+          <div class="card-art">
+            <svg viewBox="0 0 342 216" xmlns="http://www.w3.org/2000/svg" style="display:block;width:100%;height:100%;"><use href="#brci-card-biz"/></svg>
+          </div>
+          <div class="card-num-overlay">•••• •••• •••• 4521</div>
+        </div>
+        <!-- Program + benefit -->
+        <div class="p-card">
+          <div style="font-size:10.5px; font-weight:700; color:#0D2545; margin-bottom:2px;">Mastercard Business Debit •••• 4521</div>
+          <div class="card-benefit" style="font-style:normal;">Track expenses with detailed monthly reports.</div>
+        </div>
+        <!-- C2P section -->
+        <div class="p-card">
+          <div class="c2p-hdr">
+            <svg width="20" height="13" viewBox="0 0 26 16"><use href="#c2p-b"/></svg>
+            <span class="c2p-title">Click to Pay</span>
+          </div>
+          <div class="row">
+            <div>
+              <div style="
+                display:inline-flex; align-items:center; gap:5px;
+                background:linear-gradient(160deg,#2ECC71,#27AE60);
+                border-radius:6px; padding:4px 9px;
+                box-shadow:0 2px 5px rgba(39,174,96,0.35), inset 0 1px 0 rgba(255,255,255,0.2);
+                font-size:9.5px; font-weight:700; color:#fff; letter-spacing:0.02em;">
+                <span style="width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,0.9);display:inline-block;box-shadow:0 0 0 2px rgba(255,255,255,0.3);"></span>
+                Active
+              </div>
+              <div style="font-size:8.5px; color:#7A95B0; margin-top:3px;">Auto-enrolled by BRCI</div>
+            </div>
+            <div class="toggle on"></div>
+          </div>
+          <div class="divider" style="margin-top:7px;"></div>
+          <div class="c2p-note">No card number shared with merchants.<br>Token-based security per transaction.</div>
+        </div>
+        <div class="btn-danger">Deactivate Click to Pay</div>
+      </div>
+    </div>
+      <div class="annot-item"><span class="annot-check">✓</span><span><strong>UI.R7/R8</strong> — Program name, last 4, benefit message (text-only, 45 chars)</span></div>
+      <div class="annot-item"><span class="annot-check">✓</span><span><strong>IA.R1</strong> — C2P icon prominent in section header per brand requirements</span></div>
+      <div class="annot-item"><span class="annot-check">✓</span><span>Token security message explicitly stated per SRCPR</span></div>
+    </div>
+  </div>
+</div>
+
+
+</body>
+</html>
